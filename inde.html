@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WhatsApp Web API</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            color: #333;
+        }
+        
+        button {
+            background-color: #25d366;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 10px 5px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        button:hover {
+            background-color: #128c7e;
+        }
+        
+        input {
+            padding: 10px;
+            width: 100%;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>WhatsApp API Integration</h1>
+        <input type="text" id="phoneNumber" placeholder="Enter WhatsApp Number (e.g., 6281234567890)" />
+        <button onclick="linkDevice()">Link Device</button>
+        <button onclick="sendMessage()">Send Message</button>
+        <div id="response" style="margin-top: 20px; color: #333;"></div>
+    </div>
+
+    <script>
+        async function linkDevice() {
+            const phoneNumber = document.getElementById('phoneNumber').value;
+            if (!phoneNumber) {
+                alert("Please enter a phone number");
+                return;
+            }
+
+            // Make request to backend
+            const response = await fetch('linkDevice.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    phoneNumber
+                }),
+            });
+
+            const result = await response.json();
+            document.getElementById('response').innerText = result.message || "Error linking device.";
+        }
+
+        async function sendMessage() {
+            const phoneNumber = document.getElementById('phoneNumber').value;
+            if (!phoneNumber) {
+                alert("Please enter a phone number");
+                return;
+            }
+
+            // Make request to backend
+            const response = await fetch('sendMessage.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    phoneNumber,
+                    message: "Hello from Web App!"
+                }),
+            });
+
+            const result = await response.json();
+            document.getElementById('response').innerText = result.message || "Error sending message.";
+        }
+    </script>
+</body>
+
+</html>
